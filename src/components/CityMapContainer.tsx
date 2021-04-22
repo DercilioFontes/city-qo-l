@@ -3,9 +3,7 @@ import { City } from "../libs/types";
 import "./Container.css";
 import MapGL from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiZGVyY2lsaW9mb250ZXMiLCJhIjoiY2tuc2tsazc3MjV5bzJ3bzUxa2libXQzMCJ9.W5OAiOFIRyz9AaZgoBt8qQ";
+import { appEnv } from "../env";
 
 interface ContainerProps {
   city: City;
@@ -17,6 +15,8 @@ const CityMapContainer: React.FC<ContainerProps> = ({ city }) => {
     longitude: city.location.latlon.longitude,
     zoom: 11,
   });
+
+  console.log(appEnv.mapBoxApiKey);
   return (
     <div className="container">
       <strong>{city.fullName}</strong>
@@ -34,7 +34,7 @@ const CityMapContainer: React.FC<ContainerProps> = ({ city }) => {
         }}
         width="100%"
         height="100%"
-        mapboxApiAccessToken={MAPBOX_TOKEN}
+        mapboxApiAccessToken={appEnv.mapBoxApiKey}
       ></MapGL>
     </div>
   );
