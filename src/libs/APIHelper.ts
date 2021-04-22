@@ -12,6 +12,7 @@ const transformSearchCitiesResponse = (data: any) => {
         location: cityInfo.location,
         population: cityInfo.population,
         urbanArea: cityInfo._links["city:urban_area"],
+        isFavorite: false,
       };
     }
   );

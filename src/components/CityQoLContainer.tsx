@@ -37,7 +37,7 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
   }, [city]);
 
   const setProgressBarColor = (score: number) => {
-    if (score > 75) {
+    if (score >= 75) {
       return "success";
     } else if (score < 50) {
       return "danger";

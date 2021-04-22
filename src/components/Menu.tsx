@@ -14,8 +14,7 @@ import { useLocation } from "react-router-dom";
 import {
   accessibilityOutline,
   businessOutline,
-  heartOutline,
-  heartSharp,
+  cashOutline,
 } from "ionicons/icons";
 import "./Menu.css";
 
@@ -40,10 +39,10 @@ const appPages: AppPage[] = [
     mdIcon: accessibilityOutline,
   },
   {
-    title: "Favorites",
-    url: "/page/Favorites",
-    iosIcon: heartOutline,
-    mdIcon: heartSharp,
+    title: "Salaries",
+    url: "/page/Salaries",
+    iosIcon: cashOutline,
+    mdIcon: cashOutline,
   },
 ];
 

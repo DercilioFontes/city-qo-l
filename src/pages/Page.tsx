@@ -5,8 +5,6 @@ import {
   IonFabButton,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
   IonList,
   IonMenuButton,
   IonPage,
@@ -20,6 +18,8 @@ import React, { useEffect, useState } from "react";
 import { Route, useParams } from "react-router";
 import CityMapContainer from "../components/CityMapContainer";
 import CityQoLContainer from "../components/CityQoLContainer";
+import CitySalariesContainer from "../components/CitySalariesContainer";
+import { CityItem } from "../components/sub-components/CityItem";
 import { FlexDiv } from "../components/sub-components/FlexDiv";
 import { searchCities } from "../libs/APIHelper";
 import { City } from "../libs/types";
@@ -42,7 +42,12 @@ const Page: React.FC = () => {
     setCities(data as City[]);
   };
 
-  const onCitySelection = (city: City) => {
+  const onCitySelection = (e: any, city: City) => {
+    e.preventDefault();
+    if (e.target.tagName === "ION-BUTTON") {
+      return;
+    }
+
     if (name === "QoL" && !city.urbanArea) {
       return;
     } else {
@@ -73,44 +78,44 @@ const Page: React.FC = () => {
           </FlexDiv>
         </IonToolbar>
       </IonHeader>
-      {city ? (
-        <IonContent fullscreen>
-          <IonFab horizontal="end">
-            <IonFabButton size="small">
-              <IonIcon icon={closeCircleOutline} onClick={onCloseClick} />
-            </IonFabButton>
-          </IonFab>
-          <IonRouterOutlet>
-            <Route
-              exact
-              path="/page/Cities"
-              component={() => <CityMapContainer city={city} />}
-            />
-            <Route
-              exact
-              path="/page/QoL"
-              component={() => <CityQoLContainer city={city} />}
-            />
-          </IonRouterOutlet>
-        </IonContent>
-      ) : (
-        <IonContent fullscreen>
+      <IonContent fullscreen>
+        {city ? (
+          <>
+            <IonFab horizontal="end">
+              <IonFabButton size="small">
+                <IonIcon icon={closeCircleOutline} onClick={onCloseClick} />
+              </IonFabButton>
+            </IonFab>
+            <IonRouterOutlet>
+              <Route
+                exact
+                path="/page/Cities"
+                component={() => <CityMapContainer city={city} />}
+              />
+              <Route
+                exact
+                path="/page/QoL"
+                component={() => <CityQoLContainer city={city} />}
+              />
+              <Route
+                exact
+                path="/page/Salaries"
+                component={() => <CitySalariesContainer city={city} />}
+              />
+            </IonRouterOutlet>
+          </>
+        ) : (
           <IonList>
             {cities.map((city: City, i) => (
-              <IonItem
-                key={`IonItem-City-${i}`}
-                onClick={() => onCitySelection(city)}
-              >
-                <IonLabel
-                  color={name === "QoL" && city.urbanArea ? "primary" : ""}
-                >
-                  {city.fullName}
-                </IonLabel>
-              </IonItem>
+              <CityItem
+                key={`CityItem-${i}-${city.geoNameId}`}
+                city={city}
+                onCitySelection={onCitySelection}
+              />
             ))}
           </IonList>
-        </IonContent>
-      )}
+        )}
+      </IonContent>
     </IonPage>
   );
 };

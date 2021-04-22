@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   text-align: center;
   height: auto;
 
@@ -13,6 +13,10 @@
 
 .container.city-map {
   margin-top: 6rem;
+}
+
+.container.city-salaries {
+  margin-top: 7rem;
 }
 
 .container strong {

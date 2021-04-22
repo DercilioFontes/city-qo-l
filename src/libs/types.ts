@@ -13,6 +13,7 @@ export interface City {
     href: string;
     name: string;
   };
+  isFavorite: boolean;
 }
 
 export interface CityUAUrls {
