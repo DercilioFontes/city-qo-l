@@ -10,24 +10,26 @@ import {
   IonList,
   IonMenuButton,
   IonPage,
+  IonRouterOutlet,
   IonSearchbar,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { closeCircleOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import ExploreContainer from "../components/ExploreContainer";
+import { Route, useParams } from "react-router";
+import CityMapContainer from "../components/CityMapContainer";
+import CityQoLContainer from "../components/CityQoLContainer";
 import { FlexDiv } from "../components/sub-components/FlexDiv";
 import { searchCities } from "../libs/APIHelper";
 import { City } from "../libs/types";
 import "./Page.css";
 
 const Page: React.FC = () => {
+  const { name } = useParams<{ name: string }>();
   const [searchText, setSearchText] = useState("");
   const [cities, setCities] = useState<City[]>([]);
   const [city, setCity] = useState<City>();
-  const { name } = useParams<{ name: string }>();
 
   useEffect(() => {
     searchCities("").then(setCities);
@@ -41,7 +43,11 @@ const Page: React.FC = () => {
   };
 
   const onCitySelection = (city: City) => {
-    setCity(city);
+    if (name === "QoL" && !city.urbanArea) {
+      return;
+    } else {
+      setCity(city);
+    }
   };
 
   const onCloseClick = () => {
@@ -81,7 +87,18 @@ const Page: React.FC = () => {
                 <IonIcon icon={closeCircleOutline} onClick={onCloseClick} />
               </IonFabButton>
             </IonFab>
-            <ExploreContainer city={city}></ExploreContainer>
+            <IonRouterOutlet>
+              <Route
+                exact
+                path="/page/Cities"
+                component={() => <CityMapContainer city={city} />}
+              />
+              <Route
+                exact
+                path="/page/QoL"
+                component={() => <CityQoLContainer city={city} />}
+              />
+            </IonRouterOutlet>
           </>
         ) : (
           <IonList>
@@ -90,7 +107,11 @@ const Page: React.FC = () => {
                 key={`IonItem-City-${i}`}
                 onClick={() => onCitySelection(city)}
               >
-                <IonLabel>{city.fullName}</IonLabel>
+                <IonLabel
+                  color={name === "QoL" && city.urbanArea ? "primary" : ""}
+                >
+                  {city.fullName}
+                </IonLabel>
               </IonItem>
             ))}
           </IonList>

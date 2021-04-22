@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { City } from "../libs/types";
-import "./ExploreContainer.css";
+import "./Container.css";
 import MapGL from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -11,7 +11,7 @@ interface ContainerProps {
   city: City;
 }
 
-const ExploreContainer: React.FC<ContainerProps> = ({ city }) => {
+const CityMapContainer: React.FC<ContainerProps> = ({ city }) => {
   const [viewport, setViewport] = useState({
     latitude: city.location.latlon.latitude,
     longitude: city.location.latlon.longitude,
@@ -32,7 +32,6 @@ const ExploreContainer: React.FC<ContainerProps> = ({ city }) => {
         ) => {
           setViewport(viewport);
         }}
-        // style={{mapbox:"//styles/mapbox/streets-v9"}}
         width="100%"
         height="100%"
         mapboxApiAccessToken={MAPBOX_TOKEN}
@@ -41,4 +40,4 @@ const ExploreContainer: React.FC<ContainerProps> = ({ city }) => {
   );
 };
 
-export default ExploreContainer;
+export default CityMapContainer;

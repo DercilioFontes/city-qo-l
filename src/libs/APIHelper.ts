@@ -1,5 +1,5 @@
 import axios from "axios";
-import { City } from "./types";
+import { City, CityQoL, CityUAUrls } from "./types";
 const baseUrl = "https://api.teleport.org/api/cities";
 
 const transformSearchCitiesResponse = (data: any) => {
@@ -17,6 +17,16 @@ const transformSearchCitiesResponse = (data: any) => {
   );
 };
 
+const transformCityUAResponse = (data: any) => {
+  const objData = JSON.parse(data)._links;
+  console.log("objData: ", objData);
+  return {
+    cityImagesUrl: objData["ua:images"].href,
+    citySalariesUrl: objData["ua:salaries"].href,
+    cityQoLScoresUrl: objData["ua:scores"].href,
+  };
+};
+
 export const searchCities = async (input: string) => {
   try {
     if (!input) {
@@ -26,7 +36,6 @@ export const searchCities = async (input: string) => {
       `${baseUrl}/?search=${input}&embed=city:search-results/city:item`,
       { transformResponse: [transformSearchCitiesResponse] }
     );
-    console.log("response", response);
     return response.data;
   } catch (error) {
     console.error(error);
@@ -36,8 +45,26 @@ export const searchCities = async (input: string) => {
 export const getCityInfo = async (geoNameId: string) => {
   try {
     const response = await axios.get(`${baseUrl}/geonameid:${geoNameId}`);
-    console.log(response.data);
     return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getCityQoL = async (cityQoLUrl: string) => {
+  try {
+    const urlsResp = await axios.get(cityQoLUrl, {
+      transformResponse: [transformCityUAResponse],
+    });
+    const {
+      cityImagesUrl,
+      citySalariesUrl,
+      cityQoLScoresUrl,
+    } = urlsResp.data as CityUAUrls;
+
+    const qolResp = await axios.get(cityQoLScoresUrl);
+    console.log(qolResp.data);
+    return qolResp.data as CityQoL;
   } catch (error) {
     console.error(error);
   }
