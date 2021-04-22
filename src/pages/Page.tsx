@@ -13,27 +13,29 @@ import {
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import ExploreContainer from "../components/ExploreContainer";
 import { FlexDiv } from "../components/sub-components/FlexDiv";
-import { searchCities } from "../libs/APIHelper";
+import { getCityInfo, searchCities } from "../libs/APIHelper";
+import { City } from "../libs/types";
 import "./Page.css";
 
 const Page: React.FC = () => {
   const [searchText, setSearchText] = useState("");
-  const [cities, setCities] = useState([]);
-  const [error, setError] = useState();
+  const [cities, setCities] = useState<City[]>([]);
   const { name } = useParams<{ name: string }>();
 
   useEffect(() => {
-    searchCities("").then(setCities).catch(setError);
+    searchCities("").then(setCities);
   }, []);
 
   const onSearchChange = async (input: string) => {
     setSearchText(input);
-    if (input) {
-      const data = await searchCities(input);
-      setCities(data);
-    }
+    const data = await searchCities(input);
+    setCities(data as City[]);
+  };
+
+  const onCitySelection = async (geoNameId: string) => {
+    const data = await getCityInfo(geoNameId);
+    console.log("data: ", data);
   };
 
   return (
@@ -63,12 +65,14 @@ const Page: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonList>
-          {cities &&
-            cities.map((c) => (
-              <IonItem key={c}>
-                <IonLabel>{c}</IonLabel>
-              </IonItem>
-            ))}
+          {cities.map((city: City, i) => (
+            <IonItem
+              key={`IonItem-City-${i}`}
+              onClick={() => onCitySelection(city.geoNameId)}
+            >
+              <IonLabel>{city.fullName}</IonLabel>
+            </IonItem>
+          ))}
         </IonList>
       </IonContent>
     </IonPage>
