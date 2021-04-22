@@ -16,10 +16,9 @@ const CityMapContainer: React.FC<ContainerProps> = ({ city }) => {
     zoom: 11,
   });
 
-  console.log(appEnv.mapBoxApiKey);
   return (
     <div className="container">
-      <strong>{city.fullName}</strong>
+      <h3>{city.fullName}</h3>
       <p>Population: {city.population.toLocaleString()}</p>
       <MapGL
         {...viewport}
