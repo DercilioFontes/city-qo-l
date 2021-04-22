@@ -19,7 +19,6 @@ const transformSearchCitiesResponse = (data: any) => {
 
 const transformCityUAResponse = (data: any) => {
   const objData = JSON.parse(data)._links;
-  console.log("objData: ", objData);
   return {
     cityImagesUrl: objData["ua:images"].href,
     citySalariesUrl: objData["ua:salaries"].href,
@@ -62,9 +61,17 @@ export const getCityQoL = async (cityQoLUrl: string) => {
       cityQoLScoresUrl,
     } = urlsResp.data as CityUAUrls;
 
-    const qolResp = await axios.get(cityQoLScoresUrl);
-    console.log(qolResp.data);
-    return qolResp.data as CityQoL;
+    const qolImagesResp = await axios.get(cityImagesUrl);
+    const qolSalariesResp = await axios.get(citySalariesUrl);
+    const qolScoresResp = await axios.get(cityQoLScoresUrl);
+
+    const qolData = {
+      ...qolImagesResp.data,
+      ...qolSalariesResp.data,
+      ...qolScoresResp.data,
+    };
+
+    return qolData as CityQoL;
   } catch (error) {
     console.error(error);
   }

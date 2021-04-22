@@ -62,7 +62,7 @@ const Page: React.FC = () => {
             <IonMenuButton />
           </IonButtons>
           <FlexDiv>
-            <IonTitle>{name}</IonTitle>
+            <IonTitle slot="start">{name}</IonTitle>
             <IonSearchbar
               value={searchText}
               onIonChange={(e) => onSearchChange(e.detail.value!)}
@@ -73,34 +73,28 @@ const Page: React.FC = () => {
           </FlexDiv>
         </IonToolbar>
       </IonHeader>
-
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">{name}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        {city ? (
-          <>
-            <IonFab horizontal="end">
-              <IonFabButton size="small">
-                <IonIcon icon={closeCircleOutline} onClick={onCloseClick} />
-              </IonFabButton>
-            </IonFab>
-            <IonRouterOutlet>
-              <Route
-                exact
-                path="/page/Cities"
-                component={() => <CityMapContainer city={city} />}
-              />
-              <Route
-                exact
-                path="/page/QoL"
-                component={() => <CityQoLContainer city={city} />}
-              />
-            </IonRouterOutlet>
-          </>
-        ) : (
+      {city ? (
+        <IonContent fullscreen>
+          <IonFab horizontal="end">
+            <IonFabButton size="small">
+              <IonIcon icon={closeCircleOutline} onClick={onCloseClick} />
+            </IonFabButton>
+          </IonFab>
+          <IonRouterOutlet>
+            <Route
+              exact
+              path="/page/Cities"
+              component={() => <CityMapContainer city={city} />}
+            />
+            <Route
+              exact
+              path="/page/QoL"
+              component={() => <CityQoLContainer city={city} />}
+            />
+          </IonRouterOutlet>
+        </IonContent>
+      ) : (
+        <IonContent fullscreen>
           <IonList>
             {cities.map((city: City, i) => (
               <IonItem
@@ -115,8 +109,8 @@ const Page: React.FC = () => {
               </IonItem>
             ))}
           </IonList>
-        )}
-      </IonContent>
+        </IonContent>
+      )}
     </IonPage>
   );
 };

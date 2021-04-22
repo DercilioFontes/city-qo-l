@@ -17,9 +17,11 @@ const CityMapContainer: React.FC<ContainerProps> = ({ city }) => {
   });
 
   return (
-    <div className="container">
+    <div className="container city-map">
+      <div></div>
       <h3>{city.fullName}</h3>
       <p>Population: {city.population.toLocaleString()}</p>
+      <br />
       <MapGL
         {...viewport}
         onViewportChange={(
