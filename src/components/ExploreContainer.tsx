@@ -1,14 +1,42 @@
-import './ExploreContainer.css';
+import React, { useState } from "react";
+import { City } from "../libs/types";
+import "./ExploreContainer.css";
+import MapGL from "react-map-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
+
+const MAPBOX_TOKEN =
+  "pk.eyJ1IjoiZGVyY2lsaW9mb250ZXMiLCJhIjoiY2tuc2tsazc3MjV5bzJ3bzUxa2libXQzMCJ9.W5OAiOFIRyz9AaZgoBt8qQ";
 
 interface ContainerProps {
-  name: string;
+  city: City;
 }
 
-const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
+const ExploreContainer: React.FC<ContainerProps> = ({ city }) => {
+  const [viewport, setViewport] = useState({
+    latitude: city.location.latlon.latitude,
+    longitude: city.location.latlon.longitude,
+    zoom: 11,
+  });
   return (
     <div className="container">
-      <strong>{name}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <strong>{city.fullName}</strong>
+      <p>Population: {city.population.toLocaleString()}</p>
+      <MapGL
+        {...viewport}
+        onViewportChange={(
+          viewport: React.SetStateAction<{
+            latitude: number;
+            longitude: number;
+            zoom: number;
+          }>
+        ) => {
+          setViewport(viewport);
+        }}
+        // style={{mapbox:"//styles/mapbox/streets-v9"}}
+        width="100%"
+        height="100%"
+        mapboxApiAccessToken={MAPBOX_TOKEN}
+      ></MapGL>
     </div>
   );
 };

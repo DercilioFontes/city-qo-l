@@ -1,5 +1,3 @@
-import { NamedTupleMember } from "typescript";
-
 export interface City {
   fullName: string;
   geoNameId: string;

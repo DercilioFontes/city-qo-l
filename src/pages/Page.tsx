@@ -1,7 +1,10 @@
 import {
   IonButtons,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
@@ -11,16 +14,19 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { closeCircleOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import ExploreContainer from "../components/ExploreContainer";
 import { FlexDiv } from "../components/sub-components/FlexDiv";
-import { getCityInfo, searchCities } from "../libs/APIHelper";
+import { searchCities } from "../libs/APIHelper";
 import { City } from "../libs/types";
 import "./Page.css";
 
 const Page: React.FC = () => {
   const [searchText, setSearchText] = useState("");
   const [cities, setCities] = useState<City[]>([]);
+  const [city, setCity] = useState<City>();
   const { name } = useParams<{ name: string }>();
 
   useEffect(() => {
@@ -29,13 +35,17 @@ const Page: React.FC = () => {
 
   const onSearchChange = async (input: string) => {
     setSearchText(input);
+    setCity(undefined);
     const data = await searchCities(input);
     setCities(data as City[]);
   };
 
-  const onCitySelection = async (geoNameId: string) => {
-    const data = await getCityInfo(geoNameId);
-    console.log("data: ", data);
+  const onCitySelection = (city: City) => {
+    setCity(city);
+  };
+
+  const onCloseClick = () => {
+    setCity(undefined);
   };
 
   return (
@@ -64,16 +74,27 @@ const Page: React.FC = () => {
             <IonTitle size="large">{name}</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonList>
-          {cities.map((city: City, i) => (
-            <IonItem
-              key={`IonItem-City-${i}`}
-              onClick={() => onCitySelection(city.geoNameId)}
-            >
-              <IonLabel>{city.fullName}</IonLabel>
-            </IonItem>
-          ))}
-        </IonList>
+        {city ? (
+          <>
+            <IonFab horizontal="end">
+              <IonFabButton size="small">
+                <IonIcon icon={closeCircleOutline} onClick={onCloseClick} />
+              </IonFabButton>
+            </IonFab>
+            <ExploreContainer city={city}></ExploreContainer>
+          </>
+        ) : (
+          <IonList>
+            {cities.map((city: City, i) => (
+              <IonItem
+                key={`IonItem-City-${i}`}
+                onClick={() => onCitySelection(city)}
+              >
+                <IonLabel>{city.fullName}</IonLabel>
+              </IonItem>
+            ))}
+          </IonList>
+        )}
       </IonContent>
     </IonPage>
   );
