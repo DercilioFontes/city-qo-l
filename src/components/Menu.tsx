@@ -15,6 +15,8 @@ import {
   accessibilityOutline,
   businessOutline,
   cashOutline,
+  logoGithub,
+  logoLinkedin,
 } from "ionicons/icons";
 import "./Menu.css";
 
@@ -78,10 +80,24 @@ const Menu: React.FC = () => {
             );
           })}
         </IonList>
-        <IonNote class="ion-margin-top">
+        <IonList>
+          <a href="https://www.linkedin.com/in/derciliofontes/">
+            <IonIcon size="large" icon={logoLinkedin}></IonIcon>
+          </a>
+          <a href="https://github.com/DercilioFontes">
+            <IonIcon size="large" icon={logoGithub}></IonIcon>
+          </a>
+        </IonList>
+        <IonList className="references ion-margin-start">
           API resource:{" "}
           <a href="https://developers.teleport.org/">teleport.org</a>
-        </IonNote>
+          Stark:
+          <a href="https://reactjs.org/">React</a>
+          <a href="https://ionicframework.com">Ionic</a>
+          <a href="https://www.mapbox.com">Mapbox GL JS</a>
+          <a href="https://recharts.org">Recharts</a>
+          <a href="https://github.com/axios/axios">Recharts</a>
+        </IonList>
       </IonContent>
     </IonMenu>
   );
