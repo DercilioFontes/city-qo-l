@@ -1,0 +1,8 @@
+{
+  "name": "cityQoL",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "2da2f236"
+}
