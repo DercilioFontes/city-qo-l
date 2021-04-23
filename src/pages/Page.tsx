@@ -20,7 +20,6 @@ import CityMapContainer from "../components/CityMapContainer";
 import CityQoLContainer from "../components/CityQoLContainer";
 import CitySalariesContainer from "../components/CitySalariesContainer";
 import { CityItem } from "../components/sub-components/CityItem";
-import { FlexDiv } from "../components/sub-components/FlexDiv";
 import { searchCities } from "../libs/APIHelper";
 import { City } from "../libs/types";
 import "./Page.css";
@@ -66,16 +65,16 @@ const Page: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <FlexDiv>
-            <IonTitle slot="start">{name}</IonTitle>
-            <IonSearchbar
-              value={searchText}
-              onIonChange={(e) => onSearchChange(e.detail.value!)}
-              debounce={500}
-              animated
-              enterkeyhint="enter"
-            ></IonSearchbar>
-          </FlexDiv>
+          <IonTitle slot="start">{name}</IonTitle>
+        </IonToolbar>
+        <IonToolbar>
+          <IonSearchbar
+            value={searchText}
+            onIonChange={(e) => onSearchChange(e.detail.value!)}
+            debounce={500}
+            animated
+            enterkeyhint="enter"
+          ></IonSearchbar>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

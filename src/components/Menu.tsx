@@ -9,7 +9,6 @@ import {
   IonMenuToggle,
   IonNote,
 } from "@ionic/react";
-
 import { useLocation } from "react-router-dom";
 import {
   accessibilityOutline,
@@ -96,7 +95,7 @@ const Menu: React.FC = () => {
           <a href="https://ionicframework.com">Ionic</a>
           <a href="https://www.mapbox.com">Mapbox GL JS</a>
           <a href="https://recharts.org">Recharts</a>
-          <a href="https://github.com/axios/axios">Recharts</a>
+          <a href="https://github.com/axios/axios">Axios</a>
         </IonList>
       </IonContent>
     </IonMenu>

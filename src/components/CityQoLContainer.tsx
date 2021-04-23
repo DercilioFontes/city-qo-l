@@ -23,6 +23,7 @@ import {
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react";
+import { sanitize } from "dompurify";
 
 interface ContainerProps {
   city: City;
@@ -33,7 +34,9 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
   const [isBarChart, setIsBarChart] = useState<boolean>(true);
 
   useEffect(() => {
-    getCityQoL(city.urbanArea.href).then(setCityQoL);
+    if (city.urbanArea.href) {
+      getCityQoL(city.urbanArea.href).then(setCityQoL);
+    }
   }, [city]);
 
   const setProgressBarColor = (score: number) => {
@@ -68,7 +71,7 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
       <div
         className="ion-margin-bottom ion-padding ion-text-justify"
         dangerouslySetInnerHTML={{
-          __html: cityQoL.summary,
+          __html: sanitize(cityQoL.summary),
         }}
       ></div>
       <IonSegment
