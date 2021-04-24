@@ -96,10 +96,10 @@ const Menu: React.FC = () => {
         <IonList className="references ion-margin-start">
           API resource:{" "}
           <a href="https://developers.teleport.org/">teleport.org</a>
-          Stark:
+          Stack:
           <a href="https://reactjs.org/">React</a>
           <a href="https://ionicframework.com">Ionic</a>
-          <a href="https://www.mapbox.com">Mapbox GL JS</a>
+          <a href="https://developers.google.com/maps">Google Maps API</a>
           <a href="https://recharts.org">Recharts</a>
           <a href="https://github.com/axios/axios">Axios</a>
         </IonList>
