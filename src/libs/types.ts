@@ -54,3 +54,8 @@ export interface CityQoL {
   photos: Photo[];
   salaries: Salary[];
 }
+
+export interface CenterLocation {
+  lat: number;
+  lng: number
+}

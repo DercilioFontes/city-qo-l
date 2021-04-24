@@ -79,14 +79,6 @@ const Menu: React.FC = () => {
             );
           })}
         </IonList>
-        <div
-          style={{
-            backgroundColor: "#b6b6b6",
-            width: "90%",
-            height: "1px",
-            margin: "1rem auto 0",
-          }}
-        ></div>
         <IonList>
           <a
             className="ion-padding-start"
