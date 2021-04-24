@@ -2,6 +2,7 @@ import { IonButton, IonIcon, IonItem, IonLabel } from "@ionic/react";
 import { heart, heartOutline } from "ionicons/icons";
 import React, { useState } from "react";
 import { City } from "../../libs/types";
+import "./CityItem.css";
 
 interface ContainerProps {
   city: City;
@@ -19,15 +20,14 @@ export const CityItem: React.FC<ContainerProps> = ({
     if (city.isFavorite) {
       setFavorite(false);
       city.isFavorite = false;
-      localStorage.removeItem(city.geoNameId);
+      // localStorage.removeItem(city.geoNameId);
     } else {
       setFavorite(true);
       city.isFavorite = true;
-      localStorage.setItem(city.geoNameId, city.fullName);
+      // localStorage.setItem(city.geoNameId, city.fullName);
     }
-
-    console.log("localStorage: ", localStorage);
   };
+
   return (
     <IonItem onClick={(e) => onCitySelection(e, city)}>
       <IonLabel color={city.urbanArea ? "primary" : ""}>
