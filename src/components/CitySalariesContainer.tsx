@@ -12,6 +12,7 @@ import {
   CartesianGrid,
 } from "recharts";
 import "./Container.css";
+import { useHistory } from "react-router";
 
 interface ContainerProps {
   city: City;
@@ -19,9 +20,16 @@ interface ContainerProps {
 
 const CitySalariesContainer: React.FC<ContainerProps> = ({ city }) => {
   const [cityQoL, setCityQoL] = useState<CityQoL>();
+  const history = useHistory();
+
+  if (!city.urbanArea) {
+    history.push("/page/Cities");
+  }
 
   useEffect(() => {
-    getCityQoL(city.urbanArea.href).then(setCityQoL);
+    if (city.urbanArea) {
+      getCityQoL(city.urbanArea.href).then(setCityQoL);
+    }
   }, [city]);
 
   const salariesDataSet = cityQoL
@@ -37,10 +45,10 @@ const CitySalariesContainer: React.FC<ContainerProps> = ({ city }) => {
     <div className="container city-salaries">
       <h3>{city.fullName}</h3>
       <br />
-      <ResponsiveContainer width="90%" height="40%">
+      <ResponsiveContainer>
         <BarChart
-          width={80}
-          height={40}
+          width={100}
+          height={100}
           data={salariesDataSet}
           margin={{
             top: 20,

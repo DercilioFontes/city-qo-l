@@ -3,34 +3,64 @@
   flex-direction: column;
   justify-content: flex-start;
   text-align: center;
-  height: auto;
-
   position: relative;
-  margin-top: 2rem;
-  height: 110vh;
+  margin-top: 5rem;
   overflow: auto;
 }
 
+img {
+  width: 100%;
+}
+
 .container.city-map {
-  margin-top: 6rem;
+  margin-top: 10rem;
+  height: 90%;
+}
+.container.city-qol {
+  height: 85vh;
 }
 
 .container.city-salaries {
-  margin-top: 7rem;
+  margin-top: 12rem;
+  height: 90%;
 }
 
-.container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-.container p {
-  font-size: 16px;
-  line-height: 22px;
+p {
   color: #8c8c8c;
-  margin: 0;
+}
+
+.summary {
+  font-size: 1rem;
+  color: #8c8c8c;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media screen and (max-width: 576px) {
+  p {
+    font-size: 0.8rem;
+  }
+  .container.city-qol {
+    height: 115vh;
+  }
+
+  img {
+    height: 10rem;
+  }
+
+  .recharts-responsive-container {
+    font-size: 0.8rem;
+  }
 }
 
 .container a {
   text-decoration: none;
+}
+
+.recharts-responsive-container {
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+  height: 400px;
 }

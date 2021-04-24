@@ -1,3 +1,3 @@
 export const appEnv = {
-  mapBoxApiKey: process.env.REACT_APP_MAPBOX_TOKEN,
+  googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_TOKEN || "",
 };

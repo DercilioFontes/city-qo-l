@@ -24,6 +24,7 @@ import {
   IonSegmentButton,
 } from "@ionic/react";
 import { sanitize } from "dompurify";
+import { useHistory } from "react-router";
 
 interface ContainerProps {
   city: City;
@@ -32,9 +33,14 @@ interface ContainerProps {
 const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
   const [cityQoL, setCityQoL] = useState<CityQoL>();
   const [isBarChart, setIsBarChart] = useState<boolean>(true);
+  const history = useHistory();
+
+  if (!city.urbanArea) {
+    history.push("/page/Cities");
+  }
 
   useEffect(() => {
-    if (city.urbanArea.href) {
+    if (city.urbanArea) {
       getCityQoL(city.urbanArea.href).then(setCityQoL);
     }
   }, [city]);
@@ -50,44 +56,54 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
   };
 
   return cityQoL ? (
-    <div className="container">
-      <img
-        srcSet={`${cityQoL.photos[0].image.mobile} 480w,
+    <div className="container city-qol">
+      <a href={`${cityQoL.photos[0].image.web}`}>
+        <img
+          srcSet={`${cityQoL.photos[0].image.mobile} 480w,
              ${cityQoL.photos[0].image.web} 800w`}
-        sizes="(max-width: 600px) 480px, 800px"
-        src={`${cityQoL.photos[0].image.web}`}
-        alt={`${city.fullName}-${cityQoL.photos[0].attribution.photographer}`}
-      ></img>
-      <h3>{city.fullName}</h3>
-      <div className="ion-padding-start ion-padding-end">
-        <IonLabel>
-          Teleport City Score: {cityQoL.teleport_city_score.toFixed(2)}%
-        </IonLabel>
-        <IonProgressBar
-          color={setProgressBarColor(cityQoL.teleport_city_score)}
-          value={cityQoL.teleport_city_score / 100}
-        ></IonProgressBar>
+          sizes="(max-width: 600px) 480px, 800px"
+          src={`${cityQoL.photos[0].image.web}`}
+          alt={`${city.fullName}-${cityQoL.photos[0].attribution.photographer}`}
+        ></img>
+      </a>
+      <div className="ion-padding">
+        <h3>{city.fullName}</h3>
+        <div>
+          <IonLabel>
+            Teleport City Score: {cityQoL.teleport_city_score.toFixed(2)}%
+          </IonLabel>
+          <IonProgressBar
+            color={setProgressBarColor(cityQoL.teleport_city_score)}
+            value={cityQoL.teleport_city_score / 100}
+          ></IonProgressBar>
+        </div>
+        <div
+          className="ion-text-justify summary"
+          dangerouslySetInnerHTML={{
+            __html: sanitize(cityQoL.summary),
+          }}
+        ></div>
+        <IonSegment
+          defaultValue="barChart"
+          onIonChange={(e) => {
+            if (e.detail.value === "barChart") {
+              setIsBarChart(true);
+            } else {
+              setIsBarChart(false);
+            }
+          }}
+        >
+          <IonSegmentButton value="barChart">
+            <IonLabel>Bar Chart</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="radarChart">
+            <IonLabel>Radar Chart</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
       </div>
-      <div
-        className="ion-margin-bottom ion-padding ion-text-justify"
-        dangerouslySetInnerHTML={{
-          __html: sanitize(cityQoL.summary),
-        }}
-      ></div>
-      <IonSegment
-        defaultValue="barChart"
-        onIonChange={() => setIsBarChart(!isBarChart)}
-      >
-        <IonSegmentButton value="barChart">
-          <IonLabel>Bar Chart</IonLabel>
-        </IonSegmentButton>
-        <IonSegmentButton value="radarChart">
-          <IonLabel>Radar Chart</IonLabel>
-        </IonSegmentButton>
-      </IonSegment>
       {isBarChart ? (
-        <ResponsiveContainer width="90%" height="40%">
-          <BarChart width={80} height={40} data={cityQoL.categories}>
+        <ResponsiveContainer className="ion-margin-top">
+          <BarChart width={400} height={400} data={cityQoL.categories}>
             <XAxis dataKey="name" />
             <YAxis domain={[0, 10]} />
             <Tooltip
@@ -96,7 +112,7 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
                 name,
               ]}
             />
-            <Legend content={<p>Score out to 10</p>} />
+            <Legend formatter={() => "Score out to 10"} />
             <Bar
               dataKey="score_out_of_10"
               fill={colors.primary}
@@ -105,11 +121,11 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <ResponsiveContainer width="90%" height="40%">
+        <ResponsiveContainer className="ion-margin-top">
           <RadarChart
-            outerRadius={50}
-            width={80}
-            height={40}
+            outerRadius={100}
+            width={100}
+            height={100}
             data={cityQoL.categories}
           >
             <PolarGrid />
@@ -122,7 +138,7 @@ const CityQoLContainer: React.FC<ContainerProps> = ({ city }) => {
               fill={colors.primary}
               fillOpacity={0.6}
             />
-            <Legend content={<p>Score out to 10</p>} />
+            <Legend formatter={() => "Score out to 10"} />
           </RadarChart>
         </ResponsiveContainer>
       )}
