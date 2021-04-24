@@ -79,11 +79,25 @@ const Menu: React.FC = () => {
             );
           })}
         </IonList>
+        <div
+          style={{
+            backgroundColor: "#b6b6b6",
+            width: "90%",
+            height: "1px",
+            margin: "1rem auto 0",
+          }}
+        ></div>
         <IonList>
-          <a href="https://www.linkedin.com/in/derciliofontes/">
+          <a
+            className="ion-padding-start"
+            href="https://www.linkedin.com/in/derciliofontes/"
+          >
             <IonIcon size="large" icon={logoLinkedin}></IonIcon>
           </a>
-          <a href="https://github.com/DercilioFontes">
+          <a
+            className="ion-padding-start"
+            href="https://github.com/DercilioFontes"
+          >
             <IonIcon size="large" icon={logoGithub}></IonIcon>
           </a>
         </IonList>
